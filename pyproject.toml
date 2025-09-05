@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling>=1.25", "hatch-vcs>=0.4"]
+build-backend = "hatchling.build"
+
+[project]
+name = "medicalrag"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aiosqlite>=0.21.0",
+    "chainlit>=2.7.2",
+    "fastapi>=0.116.1",
+    "langchain-community>=0.3.29",
+    "langchain-core>=0.3.75",
+    "langchain-huggingface>=0.3.1",
+    "langchain-openai>=0.3.32",
+    "langchain-qdrant>=0.2.0",
+    "langchain[openai]>=0.3.27",
+    "langgraph>=0.6.6",
+    "langgraph-checkpoint-sqlite>=2.0.11",
+    "lark>=1.2.2",
+    "loguru>=0.7.3",
+    "pydantic>=2.11.7",
+    "pydantic-settings>=2.10.1",
+    "qdrant-client>=1.15.1",
+    "sentence-transformers>=5.1.0",
+    "transformers>=4.56.0",
+    "typer>=0.17.3",
+]
+authors = [{ name = "Cezar Sas", email = "cezar.sas@gmail.com" }]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/medrag"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/medrag", "README.md", "pyproject.toml"]
+
+[dependency-groups]
+dev = ["ruff>=0.12.11"]
