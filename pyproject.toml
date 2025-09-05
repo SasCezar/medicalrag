@@ -19,6 +19,7 @@ dependencies = [
     "langchain-qdrant>=0.2.0",
     "langchain[openai]>=0.3.27",
     "langgraph>=0.6.6",
+    "langgraph-checkpoint>=2.1.1",
     "langgraph-checkpoint-sqlite>=2.0.11",
     "lark>=1.2.2",
     "loguru>=0.7.3",

@@ -57,3 +57,20 @@ def get_response_generate_chain():
     rag_prompt = hub.pull("rlm/rag-prompt")
     model = get_chat_model()
     return rag_prompt | model | StrOutputParser()
+
+
+def get_question_rewrite_chain():
+    model = get_chat_model()
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            (
+                "system",
+                "You rewrite the latest user turn into a standalone question. Keep it concise and self-contained, preserve any identifiable information or constraint. All information that are relevant for a query. ",
+            ),
+            (
+                "human",
+                "Chat so far:\n\n{messages}\n\nSummary (optional): {summary}\n\nRewrite the latest user request as a standalone question, add any information that might be important from past messages.",
+            ),
+        ]
+    )
+    return prompt | model

@@ -53,11 +53,6 @@ def get_search_retriever(vectorstore: QdrantVectorStore) -> VectorStoreRetriever
             type="integer",
         ),
         AttributeInfo(
-            name="birth_date",
-            description="Patient date of birth in 'YYYY-MM-DD' format. Supports date comparisons.",
-            type="date",
-        ),
-        AttributeInfo(
             name="marital_status",
             description="Patient's marital status (e.g., 'S', 'M', 'Divorced').",
             type="string",
