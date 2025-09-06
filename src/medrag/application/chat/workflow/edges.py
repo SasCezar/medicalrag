@@ -34,7 +34,6 @@ async def decide_retrieval(state: ConversationState) -> Literal["rewrite_questio
                 "messages": state.get("messages", []),
             }
         )
-        print(result)
         retireve = result.need_retrieval.strip().lower().startswith("y")
     except Exception as e:
         logger.exception(f"Router failed, defaulting to retrieval: {e}")

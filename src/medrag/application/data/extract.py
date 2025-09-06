@@ -182,7 +182,7 @@ def convert_to_document(doc: Patient) -> List[Document]:
 
     for record in records:
         entry = Document(
-            page_content=record.content,
+            page_content=f"{record.type} \n {record.content}",
             metadata={
                 **user_info,
                 "type": record.type,

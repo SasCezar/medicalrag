@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     CHAT_MODEL_KWARGS: dict = {"model": CHAT_MODEL, "temperature": 0, "seed": 42}
     ENCODING_NAME: str = "o200k_base"
 
-    EVAL_MODEL: str = "openai:gpt-5"
+    EVAL_MODEL: str = "openai:gpt-5-mini"
 
 
 settings = Settings()
