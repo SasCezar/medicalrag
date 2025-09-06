@@ -1,9 +1,3 @@
-from dotenv import load_dotenv
-
-load_dotenv()
-
-import asyncio
-
 from langsmith import aevaluate
 
 from medrag.application.chat.workflow.graph import graph
@@ -29,7 +23,3 @@ async def run_evaluation():
         ],
     )
     return experiment_results
-
-
-if __name__ == "__main__":
-    res = asyncio.run(run_evaluation())
