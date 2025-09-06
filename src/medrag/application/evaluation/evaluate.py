@@ -17,7 +17,7 @@ from medrag.application.evaluation.metrics import (
 
 
 async def run_evaluation():
-    target =  graph | to_flat
+    target = graph | to_flat
     experiment_results = await aevaluate(
         target,
         data="medrag-singleturn-v1",
