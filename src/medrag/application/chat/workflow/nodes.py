@@ -1,5 +1,3 @@
-from typing import Literal
-
 from langchain_core.messages import AIMessage, HumanMessage, RemoveMessage
 from loguru import logger
 
@@ -15,15 +13,6 @@ from .chains import (
 )
 
 retriever = get_retriever(embedding_model_id=settings.DENSE_EMBEDDING_MODEL)
-
-
-def should_summarize(state: ConversationState) -> Literal["do_summary", "skip_summary"]:
-    last = state.get("agent_output", "")
-    turn = state.get("turn_count", 0)
-    logger.debug(f"[Router] turn={turn} last_len={len(last)}")
-    if (turn > 0 and turn % 3 == 0) or len(last) > 500:
-        return "do_summary"
-    return "skip_summary"
 
 
 async def summarize_conversation(state: ConversationState) -> ConversationState:
@@ -90,15 +79,13 @@ async def generate(state: ConversationState) -> ConversationState:
 
     chain = get_response_generate_chain()
     try:
-        out = await chain.ainvoke({"context": context, "question": q})
-        text = out if isinstance(out, str) else getattr(out, "content", str(out))
+        message = await chain.ainvoke({"context": context, "question": q})
     except Exception as e:
         logger.exception(f"Generation failed: {e}")
-        text = "Sorry, I hit an error while generating the answer."
+        message = AIMessage("Sorry, I hit an error while generating the answer.")
 
-    ai = AIMessage(content=text)
     return {
-        "messages": [ai],
+        "messages": [message],
         "context": context,
         "question": None,
         "summary": state.get("summary", ""),

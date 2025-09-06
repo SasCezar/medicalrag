@@ -1,0 +1,11 @@
+.git
+.env
+.venv
+.vscode
+.DS_Store
+.mypy_cache/
+.ruff_cache/
+*.pyc
+__pycache__/
+data/*
+tools/*

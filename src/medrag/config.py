@@ -21,8 +21,10 @@ class Settings(BaseSettings):
     CHUNK_OVERLAP: int = 64
 
     CHAT_MODEL: str = "openai:gpt-5-mini"
-    CHAT_MODEL_KWARGS: dict = {"model": CHAT_MODEL, "temperature": 0}
+    CHAT_MODEL_KWARGS: dict = {"model": CHAT_MODEL, "temperature": 0, "seed": 42}
     ENCODING_NAME: str = "o200k_base"
+
+    EVAL_MODEL: str = "openai:gpt-5"
 
 
 settings = Settings()

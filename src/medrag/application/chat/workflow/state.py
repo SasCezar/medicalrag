@@ -8,5 +8,4 @@ class ConversationState(MessagesState):
     summary: Optional[str]
     question: Optional[str]
     documents: List[Document]
-    agent_output: Optional[str]
     turn_count: int

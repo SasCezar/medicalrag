@@ -23,6 +23,7 @@ dependencies = [
     "langgraph-checkpoint-sqlite>=2.0.11",
     "lark>=1.2.2",
     "loguru>=0.7.3",
+    "openevals>=0.1.0",
     "pydantic>=2.11.7",
     "pydantic-settings>=2.10.1",
     "qdrant-client>=1.15.1",
