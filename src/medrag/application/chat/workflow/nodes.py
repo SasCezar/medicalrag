@@ -68,10 +68,12 @@ async def grade_docs(state: ConversationState) -> ConversationState:
 
 async def generate(state: ConversationState) -> ConversationState:
     logger.info("Node: generate")
+    if "question" not in state:
+        state["question"] = False
     q = state["question"] or next((m.content for m in reversed(state["messages"]) if isinstance(m, HumanMessage)), "")
 
-    if not state["documents"]:
-        context = "No directly relevant documents were found."
+    if "documents" not in state or not state["documents"]:
+        context = ""
     else:
         parts = [str(state["documents"][0].metadata)]
         parts.extend([d.page_content for d in state["documents"]])
@@ -90,3 +92,7 @@ async def generate(state: ConversationState) -> ConversationState:
         "question": None,
         "summary": state.get("summary", ""),
     }
+
+
+async def no_op(state: ConversationState) -> ConversationState:
+    return state

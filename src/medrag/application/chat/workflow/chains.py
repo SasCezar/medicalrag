@@ -6,6 +6,7 @@ from medrag.domain.prompts import (
     document_grader_prompt,
     question_rewrite_prompt,
     response_generate_prompt,
+    retrieval_router_prompt,
 )
 
 
@@ -32,3 +33,16 @@ def get_response_generate_chain():
 def get_question_rewrite_chain():
     model = get_chat_model()
     return question_rewrite_prompt | model
+
+
+def get_retrieval_router_chain():
+    class RetrievalDecision(BaseModel):
+        """Binary decision on whether retrieval is needed."""
+
+        need_retrieval: str = Field(
+            description="Answer strictly 'yes' if external patient medical documents are needed; otherwise 'no'."
+        )
+
+    model = get_chat_model().with_structured_output(RetrievalDecision)
+
+    return retrieval_router_prompt | model

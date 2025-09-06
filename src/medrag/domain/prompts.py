@@ -1,74 +1,66 @@
-from langchain.prompts.chat import HumanMessagePromptTemplate, MessagesPlaceholder
-from langchain.schema.messages import SystemMessage
-from langchain_core.messages import HumanMessage
-from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
+from langchain_core.prompts import ChatPromptTemplate
 
 conversation_summary_prompt = ChatPromptTemplate(
     [
-        MessagesPlaceholder(variable_name="messages"),
-        HumanMessage(
-            '"""Create a summary of the conversation. '
-            "The summary must be a short description of the conversation so far, "
-            'but that also captures all the relevant information shared."""'
+        (
+            "system",
+            "You summarize a chat. Produce a short description of the conversation so far "
+            "that still captures all relevant information shared.",
         ),
+        ("human", "Conversation so far:\n{messages}\n\nWrite a concise summary."),
     ]
 )
-
 
 document_grader_prompt = ChatPromptTemplate(
     [
-        SystemMessage(
+        (
+            "system",
             "You are a grader assessing the relevance of a retrieved document to a user question.\n"
             "If the document contains medical or personal information then it is relevant.\n"
             "The goal is to filter out erroneous retrievals.\n"
-            "Give a binary score 'yes' or 'no' to indicate whether the document is relevant."
+            "Give a binary score 'yes' or 'no' to indicate whether the document is relevant.",
         ),
-        HumanMessagePromptTemplate(
-            prompt=PromptTemplate(
-                template="Retrieved document: \n\n{document}\n\nUser question: {question}",
-                input_variables=["document", "question"],
-            ),
-        ),
+        ("human", "Retrieved document:\n{document}\n\nUser question: {question}"),
     ]
 )
-
 
 response_generate_prompt = ChatPromptTemplate(
     [
-        HumanMessagePromptTemplate(
-            prompt=PromptTemplate(
-                template=(
-                    "You are an assistant for question-answering tasks. "
-                    "Use the following pieces of retrieved context to answer the question. "
-                    "If you don't know the answer, just say that you don't know. "
-                    "Use three sentences maximum and keep the answer concise.\n"
-                    "Question: {question}\n"
-                    "Context: {context}\n"
-                    "Answer:"
-                ),
-                input_variables=["question", "context"],
-            )
-        )
+        (
+            "system",
+            "You are an assistant for question-answering tasks. Use the provided context to answer. "
+            "If you don't know, say you don't know. Keep the answer to at most three sentences.",
+        ),
+        ("human", "Question: {question}\n\nContext:\n{context}\n\nAnswer:"),
     ]
 )
 
-question_rewrite_prompt = ChatPromptTemplate.from_messages(
+question_rewrite_prompt = ChatPromptTemplate(
     [
-        SystemMessage(
-            "You rewrite the latest user turn into a standalone question. "
-            "Keep it concise and self-contained, preserve any identifiable information or constraints. "
-            "Include all relevant information for a query."
+        (
+            "system",
+            "You summarize the user chat into a single question that can be used to collect future "
+            "information from a database. Preserve personal information of patients. "
+            "If multiple patients are present, keep only the last one mentioned.",
         ),
-        HumanMessagePromptTemplate(
-            prompt=PromptTemplate(
-                template=(
-                    "Chat so far:\n\n{messages}\n\n"
-                    "Summary (optional): {summary}\n\n"
-                    "Rewrite the latest user request as a standalone question, "
-                    "adding any information from past messages that might be important."
-                ),
-                input_variables=["messages", "summary"],
-            )
+        (
+            "human",
+            "Chat so far:\n{messages}\n\n"
+            "Summary (optional): {summary}\n\n"
+            "Rewrite the user requests as a standalone question, adding any important details from past messages.",
         ),
+    ]
+)
+
+retrieval_router_prompt = ChatPromptTemplate(
+    [
+        (
+            "system",
+            "You are a routing assistant that decides whether to consult external medical records. "
+            "Answer 'yes' if the question needs domain-specific facts, citations, or patient-specific "
+            "information from this patient's record. Answer 'no' for chit-chat, general knowledge, or "
+            "formatting/rewrite tasks where no patient info is needed.",
+        ),
+        ("human", "Question: {question}\n\nConversation summary (optional): {summary}\n\nRecent messages: {messages}"),
     ]
 )

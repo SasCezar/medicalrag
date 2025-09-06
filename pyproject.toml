@@ -40,4 +40,8 @@ packages = ["src/medrag"]
 include = ["src/medrag", "README.md", "pyproject.toml"]
 
 [dependency-groups]
-dev = ["ruff>=0.12.11"]
+dev = [
+    "ipython>=9.5.0",
+    "notebook>=7.4.5",
+    "ruff>=0.12.11",
+]
