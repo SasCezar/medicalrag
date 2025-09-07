@@ -23,7 +23,7 @@ Synthetic patient data is generated using **Synthea**.
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/medicalrag.git
+git clone https://github.com/SasCezar/medicalrag.git
 cd medicalrag
 ```
 
