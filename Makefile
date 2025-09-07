@@ -17,5 +17,10 @@ generate_data:
 
 
 
-webapp:
+api:
 	uvicorn medrag.infrastructure.api:app --reload --env-file .env
+
+
+webapp:
+	 chainlit run src/medrag/infrastructure/chainlit.py
+
