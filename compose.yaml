@@ -22,6 +22,8 @@ services:
             target: fastapi
         ports: ["8000:8000"]
         env_file: .env
+        environment:
+            QDRANT_URL: http://qdrant:6333
         networks:
             - local
 
@@ -31,6 +33,8 @@ services:
             target: chainlit
         ports: ["8001:8001"]
         env_file: .env
+        environment:
+            QDRANT_URL: http://qdrant:6333
         networks:
             - local
 
